@@ -25,9 +25,20 @@ Resources:
       InstanceType: t2.micro
       KeyName: firstkey
       SecurityGroupIds:
-       - !Ref WebServerSecurityGroup
+       - ! Ref WebServerSecurityGroup
       Tags:
         - key: Name
           Value: WebServer-Raul
-      Userdata:   
+      Userdata: 
+        Fn::Base64:
+        | 
+         #!/bin/bash -x
+         yum update -y
+         yum install httpd -y 
+         cd /var/www/html
+         wget
+         systemctl start httpd
+         systemctl enable httpd 
+
+
 # Outputs:
