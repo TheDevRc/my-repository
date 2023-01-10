@@ -1,7 +1,9 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: |
   CloudFormation template to deploy the Kittens Carousel web application
+
 # Parameters:
+
 Resources:
 
   WebServerSecurityGroup:
@@ -18,25 +20,26 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: 0.0.0.0/0 
-  MyEC2Instance:
+
+  WebServer: 
     Type: AWS::EC2::Instance
     Properties:
       ImageId: ami-0b5eea76982371e91
       InstanceType: t2.micro
       KeyName: firstkey
       SecurityGroupIds:
-       - ! Ref WebServerSecurityGroup
+       - !Ref WebServerSecurityGroup
       Tags:
-        - key: Name
+        - Key: Name
           Value: WebServer-Raul
-      Userdata: 
+      UserData: 
         Fn::Base64:
         | 
-         #!/bin/bash -x
-         yum update -y
-         yum install httpd -y 
-         cd /var/www/html
-         FOLDER="https://raw.githubusercontent.com/TheDevRc/my-repository/main/Project-101-kittens-carousel-static-website-ec2/static-web/"
+          #!/bin/bash -x
+          yum update -y
+          yum install httpd -y 
+          cd /var/www/html
+          FOLDER="https://raw.githubusercontent.com/TheDevRc/my-repository/main/Project-101-kittens-carousel-static-website-ec2/static-web/"
           wget ${FOLDER}index.html
           wget ${FOLDER}cat0.jpg
           wget ${FOLDER}cat1.jpg
@@ -44,6 +47,3 @@ Resources:
           wget ${FOLDER}cat3.png
           systemctl start httpd
           systemctl enable httpd
-
-
-# Outputs:
