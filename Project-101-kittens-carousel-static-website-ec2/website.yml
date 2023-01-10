@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: |
+  CloudFormation template to deploy the Kittens Carousel web application
+# Parameters:
+Resources:
+
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP and SSH for webserver
+      GroupName: WebserverSecGrp
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0 
+  MyEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-0b5eea76982371e91
+      InstanceType: t2.micro
+      KeyName: firstkey
+      SecurityGroupIds:
+       - !Ref WebServerSecurityGroup
+      Tags:
+        - key: Name
+          Value: WebServer-Raul
+      Userdata:   
+# Outputs:
